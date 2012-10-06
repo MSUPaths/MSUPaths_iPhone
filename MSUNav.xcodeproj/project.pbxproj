@@ -1,0 +1,313 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		6F66139314CCFFB400FB3F3D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F66139214CCFFB400FB3F3D /* UIKit.framework */; };
+		6F66139514CCFFB400FB3F3D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F66139414CCFFB400FB3F3D /* Foundation.framework */; };
+		6F66139714CCFFB400FB3F3D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F66139614CCFFB400FB3F3D /* CoreGraphics.framework */; };
+		6F66139D14CCFFB400FB3F3D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6F66139B14CCFFB400FB3F3D /* InfoPlist.strings */; };
+		6F66139F14CCFFB400FB3F3D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F66139E14CCFFB400FB3F3D /* main.m */; };
+		6F6613A314CCFFB400FB3F3D /* MSUNavAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F6613A214CCFFB400FB3F3D /* MSUNavAppDelegate.m */; };
+		6F6613A614CCFFB400FB3F3D /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6F6613A414CCFFB400FB3F3D /* MainStoryboard.storyboard */; };
+		6F6613A914CCFFB400FB3F3D /* MSUNavViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F6613A814CCFFB400FB3F3D /* MSUNavViewController.m */; };
+		6F6613B014CCFFF800FB3F3D /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F6613AF14CCFFF800FB3F3D /* MapKit.framework */; };
+		6F6613B214CCFFFD00FB3F3D /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F6613B114CCFFFD00FB3F3D /* CoreLocation.framework */; };
+		6F69A5B115542D0100270346 /* Locations.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6F69A5B015542D0100270346 /* Locations.plist */; };
+		6FA2B742150977E500DEAC36 /* LocationsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FA2B741150977E500DEAC36 /* LocationsTableViewController.m */; };
+		6FAEBB381509860600661746 /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FAEBB371509860600661746 /* libsqlite3.0.dylib */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		6F66138E14CCFFB400FB3F3D /* MSUNav.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MSUNav.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		6F66139214CCFFB400FB3F3D /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		6F66139414CCFFB400FB3F3D /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		6F66139614CCFFB400FB3F3D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		6F66139A14CCFFB400FB3F3D /* MSUNav-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "MSUNav-Info.plist"; sourceTree = "<group>"; };
+		6F66139C14CCFFB400FB3F3D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		6F66139E14CCFFB400FB3F3D /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		6F6613A014CCFFB400FB3F3D /* MSUNav-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MSUNav-Prefix.pch"; sourceTree = "<group>"; };
+		6F6613A114CCFFB400FB3F3D /* MSUNavAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MSUNavAppDelegate.h; sourceTree = "<group>"; };
+		6F6613A214CCFFB400FB3F3D /* MSUNavAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MSUNavAppDelegate.m; sourceTree = "<group>"; };
+		6F6613A514CCFFB400FB3F3D /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard.storyboard; sourceTree = "<group>"; };
+		6F6613A714CCFFB400FB3F3D /* MSUNavViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MSUNavViewController.h; sourceTree = "<group>"; };
+		6F6613A814CCFFB400FB3F3D /* MSUNavViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MSUNavViewController.m; sourceTree = "<group>"; };
+		6F6613AF14CCFFF800FB3F3D /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		6F6613B114CCFFFD00FB3F3D /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		6F69A5B015542D0100270346 /* Locations.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Locations.plist; sourceTree = "<group>"; };
+		6FA2B740150977E500DEAC36 /* LocationsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LocationsTableViewController.h; path = ../LocationsTableViewController.h; sourceTree = "<group>"; };
+		6FA2B741150977E500DEAC36 /* LocationsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LocationsTableViewController.m; path = ../LocationsTableViewController.m; sourceTree = "<group>"; };
+		6FAEBB371509860600661746 /* libsqlite3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.0.dylib; path = usr/lib/libsqlite3.0.dylib; sourceTree = SDKROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		6F66138B14CCFFB400FB3F3D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6FAEBB381509860600661746 /* libsqlite3.0.dylib in Frameworks */,
+				6F6613B214CCFFFD00FB3F3D /* CoreLocation.framework in Frameworks */,
+				6F6613B014CCFFF800FB3F3D /* MapKit.framework in Frameworks */,
+				6F66139314CCFFB400FB3F3D /* UIKit.framework in Frameworks */,
+				6F66139514CCFFB400FB3F3D /* Foundation.framework in Frameworks */,
+				6F66139714CCFFB400FB3F3D /* CoreGraphics.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		6F66138314CCFFB300FB3F3D = {
+			isa = PBXGroup;
+			children = (
+				6FAEBB371509860600661746 /* libsqlite3.0.dylib */,
+				6F6613B114CCFFFD00FB3F3D /* CoreLocation.framework */,
+				6F6613AF14CCFFF800FB3F3D /* MapKit.framework */,
+				6F66139814CCFFB400FB3F3D /* MSUNav */,
+				6F66139114CCFFB400FB3F3D /* Frameworks */,
+				6F66138F14CCFFB400FB3F3D /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		6F66138F14CCFFB400FB3F3D /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				6F66138E14CCFFB400FB3F3D /* MSUNav.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		6F66139114CCFFB400FB3F3D /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				6F66139214CCFFB400FB3F3D /* UIKit.framework */,
+				6F66139414CCFFB400FB3F3D /* Foundation.framework */,
+				6F66139614CCFFB400FB3F3D /* CoreGraphics.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		6F66139814CCFFB400FB3F3D /* MSUNav */ = {
+			isa = PBXGroup;
+			children = (
+				6F69A5AE15542CEA00270346 /* Resources */,
+				6FA2B740150977E500DEAC36 /* LocationsTableViewController.h */,
+				6FA2B741150977E500DEAC36 /* LocationsTableViewController.m */,
+				6F6613A114CCFFB400FB3F3D /* MSUNavAppDelegate.h */,
+				6F6613A214CCFFB400FB3F3D /* MSUNavAppDelegate.m */,
+				6F6613A414CCFFB400FB3F3D /* MainStoryboard.storyboard */,
+				6F6613A714CCFFB400FB3F3D /* MSUNavViewController.h */,
+				6F6613A814CCFFB400FB3F3D /* MSUNavViewController.m */,
+				6F66139914CCFFB400FB3F3D /* Supporting Files */,
+			);
+			path = MSUNav;
+			sourceTree = "<group>";
+		};
+		6F66139914CCFFB400FB3F3D /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				6F66139A14CCFFB400FB3F3D /* MSUNav-Info.plist */,
+				6F66139B14CCFFB400FB3F3D /* InfoPlist.strings */,
+				6F66139E14CCFFB400FB3F3D /* main.m */,
+				6F6613A014CCFFB400FB3F3D /* MSUNav-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		6F69A5AE15542CEA00270346 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				6F69A5B015542D0100270346 /* Locations.plist */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		6F66138D14CCFFB400FB3F3D /* MSUNav */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6F6613AC14CCFFB400FB3F3D /* Build configuration list for PBXNativeTarget "MSUNav" */;
+			buildPhases = (
+				6F66138A14CCFFB400FB3F3D /* Sources */,
+				6F66138B14CCFFB400FB3F3D /* Frameworks */,
+				6F66138C14CCFFB400FB3F3D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MSUNav;
+			productName = MSUNav;
+			productReference = 6F66138E14CCFFB400FB3F3D /* MSUNav.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		6F66138514CCFFB300FB3F3D /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+				ORGANIZATIONNAME = none;
+			};
+			buildConfigurationList = 6F66138814CCFFB300FB3F3D /* Build configuration list for PBXProject "MSUNav" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 6F66138314CCFFB300FB3F3D;
+			productRefGroup = 6F66138F14CCFFB400FB3F3D /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				6F66138D14CCFFB400FB3F3D /* MSUNav */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		6F66138C14CCFFB400FB3F3D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6F66139D14CCFFB400FB3F3D /* InfoPlist.strings in Resources */,
+				6F6613A614CCFFB400FB3F3D /* MainStoryboard.storyboard in Resources */,
+				6F69A5B115542D0100270346 /* Locations.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		6F66138A14CCFFB400FB3F3D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6F66139F14CCFFB400FB3F3D /* main.m in Sources */,
+				6F6613A314CCFFB400FB3F3D /* MSUNavAppDelegate.m in Sources */,
+				6F6613A914CCFFB400FB3F3D /* MSUNavViewController.m in Sources */,
+				6FA2B742150977E500DEAC36 /* LocationsTableViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		6F66139B14CCFFB400FB3F3D /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				6F66139C14CCFFB400FB3F3D /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		6F6613A414CCFFB400FB3F3D /* MainStoryboard.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				6F6613A514CCFFB400FB3F3D /* en */,
+			);
+			name = MainStoryboard.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		6F6613AA14CCFFB400FB3F3D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		6F6613AB14CCFFB400FB3F3D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		6F6613AD14CCFFB400FB3F3D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "MSUNav/MSUNav-Prefix.pch";
+				INFOPLIST_FILE = "MSUNav/MSUNav-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		6F6613AE14CCFFB400FB3F3D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "MSUNav/MSUNav-Prefix.pch";
+				INFOPLIST_FILE = "MSUNav/MSUNav-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		6F66138814CCFFB300FB3F3D /* Build configuration list for PBXProject "MSUNav" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6F6613AA14CCFFB400FB3F3D /* Debug */,
+				6F6613AB14CCFFB400FB3F3D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		6F6613AC14CCFFB400FB3F3D /* Build configuration list for PBXNativeTarget "MSUNav" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6F6613AD14CCFFB400FB3F3D /* Debug */,
+				6F6613AE14CCFFB400FB3F3D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 6F66138514CCFFB300FB3F3D /* Project object */;
+}
