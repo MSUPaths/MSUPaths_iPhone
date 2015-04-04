@@ -1,0 +1,4 @@
+# Contains name of buildings that is not working for the moment
+# will be ignored by the building system
+# check for the second value in the build_master.txt
+ANGELL UNIVERSITY SERVICES BUILDING
