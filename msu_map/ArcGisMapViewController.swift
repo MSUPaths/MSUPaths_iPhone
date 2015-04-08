@@ -21,6 +21,9 @@ let kRouteTaskUrl = "https://prod.gis.msu.edu/arcgis/rest/services/routing/ped_n
 
 class ArcGisMapViewController: UIViewController, AGSRouteTaskDelegate, AGSLayerCalloutDelegate, UIAlertViewDelegate {
     
+    var destinationBuilding: Building!
+    var routingFlag: Bool = false
+    
     @IBOutlet weak var mapView:AGSMapView!
     @IBOutlet weak var directionsBannerView:UIView!
     @IBOutlet weak var directionsLabel:UILabel!
@@ -85,10 +88,6 @@ class ArcGisMapViewController: UIViewController, AGSRouteTaskDelegate, AGSLayerC
         NSNotificationCenter.defaultCenter().addObserver(self, selector:"respondToGeomChanged:", name:AGSSketchGraphicsLayerGeometryDidChangeNotification, object:nil)
         
         
-        // set the mapView's touchDelegate to the sketchLayer so we get points symbolized when sketching
-        self.mapView.touchDelegate = self.sketchLayer
-        
-        
         // add graphics layer
         self.graphicsLayer = AGSGraphicsLayer()
         self.mapView.addMapLayer(self.graphicsLayer, withName:"Route results")
@@ -105,7 +104,21 @@ class ArcGisMapViewController: UIViewController, AGSRouteTaskDelegate, AGSLayerC
         self.stopCalloutView = removeStopBtn
         
         // update our banner
-        self.updateDirectionsLabel("Tap on the map to add stops & barriers")
+        self.updateDirectionsLabel("No Direction")
+        
+        //Listen to KVO notifications for map gps's location property
+        self.mapView.locationDisplay.addObserver(self, forKeyPath: "location", options: .New, context: nil)
+    
+        self.mapView.locationDisplay.autoPanMode = .Default
+        
+        self.mapView.locationDisplay.wanderExtentFactor = 0.75
+        
+        //Start the map's gps if it isn't enabled already
+        if !self.mapView.locationDisplay.dataSourceStarted {
+            self.mapView.locationDisplay.startDataSource()
+        }
+        
+        self.mapView.addObserver(self, forKeyPath: "mapAnchor", options: .New, context: nil)
     }
     
     override func didReceiveMemoryWarning() {
@@ -120,6 +133,8 @@ class ArcGisMapViewController: UIViewController, AGSRouteTaskDelegate, AGSLayerC
     //
     func routeTask(routeTask: AGSRouteTask!, operation op: NSOperation!, didRetrieveDefaultRouteTaskParameters routeParams: AGSRouteTaskParameters!) {
         self.routeTaskParams = routeParams
+        readyToRoute()
+        
     }
     
     //
@@ -405,7 +420,7 @@ class ArcGisMapViewController: UIViewController, AGSRouteTaskDelegate, AGSLayerC
     // perform the route task's solve operation
     //
     @IBAction func routeBtnClicked() {
-self.drawRoute(42.724798, fromLong: -84.481462, toLat: 42.7291990138, toLong: -84.4771316579)
+        self.drawRoute(42.724798, fromLong: -84.481462, toLat: 42.7291990138, toLong: -84.4771316579)
         self.nextBtn.enabled = true
         self.prevBtn.enabled = false
         /*
@@ -551,6 +566,21 @@ self.drawRoute(42.724798, fromLong: -84.481462, toLat: 42.7291990138, toLong: -8
         
         // execute the route task
         self.routeTask.solveWithParameters(self.routeTaskParams)
+        
+        self.mapView.locationDisplay.autoPanMode = .Navigation
+
+    }
+    
+    func drawRouteFromCurrentLocationToBuilding(toBuilding: Building) {
+        self.updateDirectionsLabel("Getting your location ...")
+        
+        //Start the map's gps if it isn't enabled already
+        if !self.mapView.locationDisplay.dataSourceStarted {
+            self.mapView.locationDisplay.startDataSource()
+        }
+        
+        destinationBuilding = toBuilding
+        routingFlag = true
     }
 
     
@@ -645,6 +675,33 @@ self.drawRoute(42.724798, fromLong: -84.481462, toLat: 42.7291990138, toLong: -8
             return true
         }else{
             return false
+        }
+    }
+    
+    // - GPS delegate
+    
+    override func observeValueForKeyPath(keyPath: (String!), ofObject object: (AnyObject!), change: ([NSObject : AnyObject]!), context: UnsafeMutablePointer<Void>) {
+        if (keyPath == "location" && routingFlag) {
+            readyToRoute()
+        }
+        
+        else if (keyPath == "mapAnchor") {
+            NSLog("map center changed")
+        }
+    }
+    
+    // Wait for both getting user location and getting default routeTaskParams to complete
+    func readyToRoute() {
+        if self.mapView.locationDisplay.location == nil || self.routeTaskParams == nil || !self.routingFlag {
+            return
+        } else {
+            routingFlag = false
+            if destinationBuilding != nil {
+                var currentLocation = self.mapView.locationDisplay.location
+                drawRoute(currentLocation.point.y, fromLong: currentLocation.point.x, toLat: destinationBuilding.latitude.doubleValue, toLong: destinationBuilding.longitude.doubleValue)
+            } else {
+                NSLog("Destination building is nil")
+            }
         }
     }
 }

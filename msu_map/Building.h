@@ -6,7 +6,7 @@
 //  Copyright (c) 2012 Minh Pham. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+@import UIKit;
 
 // Hold info for building
 // create from build_master.txt through BuildingSystem

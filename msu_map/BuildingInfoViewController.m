@@ -10,8 +10,10 @@
 
 #include "Building.h"
 #include "MapViewController.h"
+#include "msu_map-swift.h"
 
 #define MapViewIndex 1
+#define ArcGisMapViewIndex 2
 
 @interface BuildingInfoViewController ()
 
@@ -61,6 +63,7 @@
 // Update mapView building id and
 // Switch to mapView
 - (IBAction)getDirection:(id)sender {
+    /*
     UIViewController *view = self.tabBarController.viewControllers[MapViewIndex];
     if ([(id)view isKindOfClass:[MapViewController class]])
     {
@@ -71,7 +74,17 @@
     else {
         NSLog(@"Wrong MapViewIndex");
     }
-
+*/
+    UIViewController *view = self.tabBarController.viewControllers[ArcGisMapViewIndex];
+    if ([(id)view isKindOfClass:[ArcGisMapViewController class]])
+    {
+        [self.tabBarController setSelectedIndex:ArcGisMapViewIndex];
+        [(id)view drawRouteFromCurrentLocationToBuilding:myBuilding]; // downcasting
+        
+    }
+    else {
+        NSLog(@"Wrong MapViewIndex");
+    }
 }
 
 // initialize with a pointer to a building
