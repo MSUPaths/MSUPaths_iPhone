@@ -204,18 +204,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bJ0-my-P1G" customClass="AGSMapView">
-                                <rect key="frame" x="0.0" y="108" width="320" height="376"/>
+                            <view opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bJ0-my-P1G" customClass="AGSMapView">
+                                <rect key="frame" x="0.0" y="51" width="320" height="800"/>
                                 <subviews>
-                                    <imageView opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" misplaced="YES" image="ArcGIS.bundle/esri.png" translatesAutoresizingMaskIntoConstraints="NO" id="kYk-B3-dHl">
-                                        <rect key="frame" x="10" y="349" width="56" height="32"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="32" id="jQV-8o-IUA"/>
-                                            <constraint firstAttribute="width" constant="56" id="nd8-2X-WRJ"/>
-                                        </constraints>
-                                    </imageView>
                                     <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DRB-r7-9ko">
-                                        <rect key="frame" x="247" y="164" width="65" height="30"/>
+                                        <rect key="frame" x="247" y="221" width="65" height="30"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="65" id="AsX-gB-CCS"/>
                                         </constraints>
@@ -227,7 +220,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="u8V-yi-deY">
-                                        <rect key="frame" x="8" y="164" width="65" height="30"/>
+                                        <rect key="frame" x="8" y="221" width="65" height="30"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="65" id="LPi-al-HAg"/>
                                         </constraints>
@@ -238,11 +231,20 @@
                                             <action selector="prevBtnClicked" destination="fsI-RS-mUb" eventType="touchUpInside" id="Cyd-iA-dzh"/>
                                         </connections>
                                     </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HvF-uW-ovS">
+                                        <rect key="frame" x="0.0" y="404" width="320" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
                                 <color key="backgroundColor" white="0.75" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="HvF-uW-ovS" firstAttribute="width" secondItem="bJ0-my-P1G" secondAttribute="width" id="U76-LQ-li9"/>
+                                </constraints>
                             </view>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.5" contentMode="left" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="hfa-3D-X4d" userLabel="Directions Label">
-                                <rect key="frame" x="0.0" y="56" width="320" height="44"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.5" contentMode="left" misplaced="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="hfa-3D-X4d" userLabel="Directions Label">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="51"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
@@ -250,18 +252,21 @@
                             </label>
                         </subviews>
                         <color key="backgroundColor" white="0.75" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="hfa-3D-X4d" firstAttribute="width" secondItem="0YG-51-odx" secondAttribute="width" id="8wo-C1-o8v"/>
+                            <constraint firstItem="bJ0-my-P1G" firstAttribute="top" secondItem="hfa-3D-X4d" secondAttribute="bottom" id="I0r-bF-jBv"/>
+                            <constraint firstItem="hfa-3D-X4d" firstAttribute="top" secondItem="IbB-FR-Ome" secondAttribute="bottom" id="NMT-hh-RHi"/>
+                            <constraint firstItem="bJ0-my-P1G" firstAttribute="width" secondItem="0YG-51-odx" secondAttribute="width" id="Xa6-vg-7if"/>
+                            <constraint firstItem="B9P-2c-t8y" firstAttribute="top" secondItem="bJ0-my-P1G" secondAttribute="bottom" id="Z3V-90-EIE"/>
+                            <constraint firstAttribute="centerX" secondItem="hfa-3D-X4d" secondAttribute="centerX" id="nUi-6S-Lij"/>
+                        </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="ArcGIS" id="WzE-19-0h3"/>
-                    <toolbarItems>
-                        <barButtonItem title="Route" id="7jf-mX-MQc" userLabel="Route Btn">
-                            <connections>
-                                <action selector="routeBtnClicked" destination="fsI-RS-mUb" id="zES-sE-jc6"/>
-                            </connections>
-                        </barButtonItem>
-                    </toolbarItems>
+                    <toolbarItems/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="directionsLabel" destination="hfa-3D-X4d" id="TMJ-9e-PDp"/>
+                        <outlet property="mapLabel" destination="HvF-uW-ovS" id="V9l-oR-3Dt"/>
                         <outlet property="mapView" destination="bJ0-my-P1G" id="qzf-Z2-EFJ"/>
                         <outlet property="nextBtn" destination="DRB-r7-9ko" id="BvH-0H-pvT"/>
                         <outlet property="prevBtn" destination="u8V-yi-deY" id="bAD-ei-Snp"/>
@@ -273,7 +278,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="ArcGIS.bundle/esri.png" width="16" height="16"/>
         <image name="first" width="16" height="16"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

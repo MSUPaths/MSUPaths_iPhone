@@ -15,21 +15,33 @@ import UIKit
 import ArcGIS
 
 //let kTiledMapServiceUrl = "http://services.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer"
-let kTiledMapServiceUrl = "http://prod.gis.msu.edu/arcgis/rest/services/basemap/osm/MapServer"
+//let kTiledMapServiceUrl = "http://prod.gis.msu.edu/arcgis/rest/services/basemap/osm/MapServer"
+let kTiledMapServiceUrl = "http://prod.gis.msu.edu/arcgis/rest/services/msu/basemap/MapServer"
 //let kRouteTaskUrl = "http://sampleserver3.arcgisonline.com/ArcGIS/rest/services/Network/USA/NAServer/Route"
 let kRouteTaskUrl = "https://prod.gis.msu.edu/arcgis/rest/services/routing/ped_network/NAServer/Route"
 
+let DistanceThreshold = 15.0
+
 class ArcGisMapViewController: UIViewController, AGSRouteTaskDelegate, AGSLayerCalloutDelegate, UIAlertViewDelegate {
     
+    enum MapMode {
+        case WaitToRoute
+        case ReadyToRoute
+        case Routing
+        case Navigating
+        case None
+    }
+    
     var destinationBuilding: Building!
-    var routingFlag: Bool = false
+    var mapMode: MapMode = MapMode.None
     
     @IBOutlet weak var mapView:AGSMapView!
-    @IBOutlet weak var directionsBannerView:UIView!
+    //@IBOutlet weak var directionsBannerView:UIView!
     @IBOutlet weak var directionsLabel:UILabel!
     
     @IBOutlet weak var prevBtn: UIButton!
     @IBOutlet weak var nextBtn: UIButton!
+    @IBOutlet weak var mapLabel: UILabel!
     
     var graphicsLayer:AGSGraphicsLayer!
     var sketchLayer:AGSSketchGraphicsLayer!
@@ -119,11 +131,28 @@ class ArcGisMapViewController: UIViewController, AGSRouteTaskDelegate, AGSLayerC
         }
         
         self.mapView.addObserver(self, forKeyPath: "mapAnchor", options: .New, context: nil)
+        
+        self.mapLabel.text = ""
+        
+        self.setMapMode(MapMode.None)
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        //Start the map's gps if it isn't enabled already
+        if !self.mapView.locationDisplay.dataSourceStarted {
+            self.mapView.locationDisplay.startDataSource()
+        }
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        self.mapView.locationDisplay.stopDataSource()
+        super.viewWillDisappear(animated)
     }
     
     //MARK: - AGSRouteTaskDelegate
@@ -133,7 +162,7 @@ class ArcGisMapViewController: UIViewController, AGSRouteTaskDelegate, AGSLayerC
     //
     func routeTask(routeTask: AGSRouteTask!, operation op: NSOperation!, didRetrieveDefaultRouteTaskParameters routeParams: AGSRouteTaskParameters!) {
         self.routeTaskParams = routeParams
-        readyToRoute()
+        self.readyToRoute()
         
     }
     
@@ -141,9 +170,19 @@ class ArcGisMapViewController: UIViewController, AGSRouteTaskDelegate, AGSLayerC
     // an error was encountered while getting defaults
     //
     func routeTask(routeTask: AGSRouteTask!, operation op: NSOperation!, didFailToRetrieveDefaultRouteTaskParametersWithError error: NSError!) {
-        // Create an alert to let the user know the retrieval failed
-        // Click Retry to attempt to retrieve the defaults again
-        UIAlertView(title: "Error", message: "Failed to retrieve default route parameters", delegate: self, cancelButtonTitle: "Ok").show()
+        let queue = NSOperationQueue()
+        queue.addOperationWithBlock() {
+                // Check internet connection
+                var url = NSURL(string: "https://www.google.com")
+                var temp = String(contentsOfURL: url!, encoding: NSUTF8StringEncoding, error: nil)
+                if (nil == temp) {
+                    self.updateDirectionsLabel("No internet connection.")
+                }
+                else {
+                    self.updateDirectionsLabel("Failed to retrieve default route param")
+                }
+        }
+        
     }
     
     
@@ -151,6 +190,7 @@ class ArcGisMapViewController: UIViewController, AGSRouteTaskDelegate, AGSLayerC
     // route was solved
     //
     func routeTask(routeTask: AGSRouteTask!, operation op: NSOperation!, didSolveWithResult routeTaskResult: AGSRouteTaskResult!) {
+        self.reset()
         
         // update our banner with status
         self.updateDirectionsLabel("Routing completed")
@@ -163,9 +203,6 @@ class ArcGisMapViewController: UIViewController, AGSRouteTaskDelegate, AGSLayerC
             
             // add the route graphic to the graphic's layer
             self.graphicsLayer.addGraphic(self.routeResult.routeGraphic)
-            
-            // enable the next button so the user can traverse directions
-            self.nextBtn.enabled = true
             
             // remove the stop graphics from the graphics layer
             // careful not to attempt to mutate the graphics array while
@@ -193,6 +230,8 @@ class ArcGisMapViewController: UIViewController, AGSRouteTaskDelegate, AGSLayerC
                 self.graphicsLayer.addGraphic(sg)
             }
         }
+        
+        self.setMapMode(MapMode.Navigating)
     }
     
     //
@@ -205,6 +244,8 @@ class ArcGisMapViewController: UIViewController, AGSRouteTaskDelegate, AGSLayerC
         // let the user know
         UIAlertView(title: "Solve Route Failed", message: error.localizedDescription, delegate: nil, cancelButtonTitle: "Ok").show()
         println("Solve Route Failed :: \(error)")
+        
+        self.setMapMode(MapMode.None)
     }
     
     //MARK: - UIAlertViewDelegate
@@ -346,9 +387,6 @@ class ArcGisMapViewController: UIViewController, AGSRouteTaskDelegate, AGSLayerC
         // remove all graphics
         self.graphicsLayer.removeAllGraphics()
         
-        // reset directions label
-        self.updateDirectionsLabel("Tap on the map to add stops & barriers")
-        
         //
         // if the sketch layer was removed/nil'd out, re-add it
         if self.sketchLayer == nil {
@@ -361,10 +399,6 @@ class ArcGisMapViewController: UIViewController, AGSRouteTaskDelegate, AGSLayerC
             // clear the sketch layer and reset it to a point
             self.sketchLayer.clear()
         }
-        
-        // disable the next/prev direction buttons
-        self.nextBtn.enabled = false
-        self.prevBtn.enabled = false
     }
     
     func removeStopClicked() {
@@ -416,97 +450,14 @@ class ArcGisMapViewController: UIViewController, AGSRouteTaskDelegate, AGSLayerC
         }
     }
     
-    //
-    // perform the route task's solve operation
-    //
-    @IBAction func routeBtnClicked() {
-        self.drawRoute(42.724798, fromLong: -84.481462, toLat: 42.7291990138, toLong: -84.4771316579)
-        self.nextBtn.enabled = true
-        self.prevBtn.enabled = false
-        /*
-        // update our banner
-        self.updateDirectionsLabel("Routing...")
-        
-        // if we have a sketch layer on the map, remove it
-        
-        if let sketchLayer = find(self.mapView.mapLayers as [AGSLayer], self.sketchLayer as AGSLayer) {
-        self.mapView.removeMapLayerWithName(self.sketchLayer.name)
-        self.mapView.touchDelegate = nil
-        self.sketchLayer = nil
-        
-        //also disable the sketch control so that user cannot sketch
-        self.sketchModeSegCtrl.selectedSegmentIndex = -1
-        for var i = 0; i < self.sketchModeSegCtrl.numberOfSegments; i++ {
-        self.sketchModeSegCtrl.setEnabled(false, forSegmentAtIndex:i)
-        }
-        }
-        
-        var stops = [AGSStopGraphic]()
-        var polygonBarriers = [AGSGraphic]()
-        
-        // get the stop, barriers for the route task
-        for g in self.graphicsLayer.graphics {
-            // if it's a stop graphic, add the object to stops
-            if g is AGSStopGraphic {
-                stops.append(g as AGSStopGraphic)
-            }
-                
-                // if "barrierNumber" exists in the attributes, we know it is a barrier
-                // so add the object to our barriers
-            else if g.attributeAsStringForKey("barrierNumber") != nil {
-                print(g.dynamicType.description())
-                polygonBarriers.append(g as AGSGraphic)
-            }
-            
-            
-        }
-        
-        // set the stop and polygon barriers on the parameters object
-        if (stops.count > 0) {
-            self.routeTaskParams.setStopsWithFeatures(stops)
-        }
-        
-        if (polygonBarriers.count > 0) {
-            self.routeTaskParams.setPolygonBarriersWithFeatures(polygonBarriers)
-        }
-        
-        // this generalizes the route graphics that are returned
-        self.routeTaskParams.outputGeometryPrecision = 5.0
-        self.routeTaskParams.outputGeometryPrecisionUnits = .Meters
-        
-        // return the graphic representing the entire route, generalized by the previous
-        // 2 properties: outputGeometryPrecision and outputGeometryPrecisionUnits
-        self.routeTaskParams.returnRouteGraphics = true
-        
-        // this returns turn-by-turn directions
-        self.routeTaskParams.returnDirections = true
-        
-        // the next 3 lines will cause the task to find the
-        // best route regardless of the stop input order
-        self.routeTaskParams.findBestSequence = true
-        self.routeTaskParams.preserveFirstStop = true
-        self.routeTaskParams.preserveLastStop = false
-        
-        // since we used "findBestSequence" we need to
-        // get the newly reordered stops
-        self.routeTaskParams.returnStopGraphics = true
-        
-        // ensure the graphics are returned in our map's spatial reference
-        self.routeTaskParams.outSpatialReference = self.mapView.spatialReference;
-        
-        // let's ignore invalid locations
-        self.routeTaskParams.ignoreInvalidLocations = true
-        
-        // you can also set additional properties here that should
-        // be considered during analysis.
-        // See the conceptual help for Routing task.
-        
-        // execute the route task
-        self.routeTask.solveWithParameters(self.routeTaskParams)
-*/
-    }
-    
+    // Draw route
     func drawRoute(fromLat: Double, fromLong: Double, toLat: Double, toLong: Double) {
+        
+        if self.routeTaskParams == nil {
+            self.routeTask.retrieveDefaultRouteTaskParameters()
+            self.setMapMode(MapMode.WaitToRoute)
+            return
+        }
         
         // update our banner
         self.updateDirectionsLabel("Routing...")
@@ -569,18 +520,23 @@ class ArcGisMapViewController: UIViewController, AGSRouteTaskDelegate, AGSLayerC
         
         self.mapView.locationDisplay.autoPanMode = .Navigation
 
+        self.setMapMode(MapMode.Routing)
     }
     
+    // Draw route to building
     func drawRouteFromCurrentLocationToBuilding(toBuilding: Building) {
         self.updateDirectionsLabel("Getting your location ...")
+        
+        self.reset()
         
         //Start the map's gps if it isn't enabled already
         if !self.mapView.locationDisplay.dataSourceStarted {
             self.mapView.locationDisplay.startDataSource()
         }
         
-        destinationBuilding = toBuilding
-        routingFlag = true
+        self.destinationBuilding = toBuilding
+        self.setMapMode(MapMode.WaitToRoute)
+        self.readyToRoute()
     }
 
     
@@ -595,7 +551,13 @@ class ArcGisMapViewController: UIViewController, AGSRouteTaskDelegate, AGSLayerC
     // move to the next direction in the direction set
     //
     @IBAction func nextBtnClicked() {
+        
         self.directionIndex++
+        
+        if self.directionIndex > self.routeResult.directions.graphics.count - 1 {
+            self.setMapMode(MapMode.None)
+            return
+        }
         
         // remove current direction graphic, so we can display next one
         if self.currentDirectionGraphic != nil {
@@ -678,11 +640,20 @@ class ArcGisMapViewController: UIViewController, AGSRouteTaskDelegate, AGSLayerC
         }
     }
     
-    // - GPS delegate
+    // - Observer delegate -- for location changed
     
     override func observeValueForKeyPath(keyPath: (String!), ofObject object: (AnyObject!), change: ([NSObject : AnyObject]!), context: UnsafeMutablePointer<Void>) {
-        if (keyPath == "location" && routingFlag) {
-            readyToRoute()
+        if (keyPath == "location") {
+            switch self.mapMode {
+            case MapMode.WaitToRoute:
+                readyToRoute()
+            case MapMode.Navigating:
+                if computeDistanceToNextSegment() < DistanceThreshold {
+                    self.nextBtnClicked()
+                }
+            default:
+                break
+            }
         }
         
         else if (keyPath == "mapAnchor") {
@@ -692,16 +663,54 @@ class ArcGisMapViewController: UIViewController, AGSRouteTaskDelegate, AGSLayerC
     
     // Wait for both getting user location and getting default routeTaskParams to complete
     func readyToRoute() {
-        if self.mapView.locationDisplay.location == nil || self.routeTaskParams == nil || !self.routingFlag {
+        if self.mapView.locationDisplay.location == nil || self.routeTaskParams == nil || self.mapMode != MapMode.WaitToRoute {
             return
         } else {
-            routingFlag = false
+            self.setMapMode(MapMode.ReadyToRoute)
             if destinationBuilding != nil {
                 var currentLocation = self.mapView.locationDisplay.location
                 drawRoute(currentLocation.point.y, fromLong: currentLocation.point.x, toLat: destinationBuilding.latitude.doubleValue, toLong: destinationBuilding.longitude.doubleValue)
             } else {
                 NSLog("Destination building is nil")
+                self.updateDirectionsLabel("Choose a destination building from the list tab")
             }
+        }
+    }
+    
+    func computeDistanceToNextSegment() -> Double {
+        var currentLocation = self.mapView.locationDisplay.location
+        
+        if self.routeResult == nil || self.routeResult.directions == nil || self.directionIndex > self.routeResult.directions.graphics.count - 2 || currentLocation == nil {
+            return Double.infinity
+        }
+        
+        var nextSegment = self.routeResult.directions.graphics[self.directionIndex + 1] as AGSDirectionGraphic
+        // route result spatial reference: wkid = 102100
+        
+        var geometryEngine = AGSGeometryEngine.defaultGeometryEngine()
+        var currentPoint = geometryEngine.projectGeometry(currentLocation.point, toSpatialReference: nextSegment.geometry.spatialReference)
+        
+        var d = geometryEngine.distanceFromGeometry(currentPoint, toGeometry: nextSegment.geometry)
+        var d2 = geometryEngine.distanceFromGeometry(currentPoint, toGeometry: self.routeResult.directions.graphics[self.directionIndex].geometry)
+        self.mapLabel.text = String(format:"Distance %.1f; %.2f", d, d2)
+        return d
+    }
+    
+    func setMapMode(newMode: MapMode) {
+        self.mapMode = newMode
+        
+        switch newMode {
+        case MapMode.Navigating:
+            self.nextBtn.hidden = false
+            self.prevBtn.hidden = false
+            self.nextBtn.enabled = true
+            self.prevBtn.enabled = false
+            self.directionIndex = 0
+
+        default:
+            self.nextBtn.hidden = true
+            self.prevBtn.hidden = true
+            self.mapLabel.text = ""
         }
     }
 }
