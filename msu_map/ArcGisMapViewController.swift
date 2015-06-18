@@ -64,6 +64,15 @@ class ArcGisMapViewController: UIViewController, AGSRouteTaskDelegate, AGSLayerC
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // Set the client ID
+        var error:NSError? = nil
+        let clientID = "yAus9A6T1rH01KUS"
+        AGSRuntimeEnvironment.setClientID(clientID, error: &error)
+        if error != nil{
+            // We had a problem using our client ID
+            println("Error using client ID : \(error?.localizedDescription)")
+        }
+        
         // Load a tiled map service
         let mapUrl = NSURL(string: kTiledMapServiceUrl)
         let tiledLyr = AGSTiledMapServiceLayer(URL: mapUrl)
